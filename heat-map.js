@@ -2,11 +2,11 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const width = 1603;
 const height = 540;
-const margins = {top: 20, right: 20, bottom: 20, left: 20};
+const margins = {top: 60, right: 60, bottom: 60, left: 60};
 
 fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json")
     .then(response => response.json())
-    .then(data => createMap(data.monthlyVariance))
+    .then(data => createMap(data))
 
 
 function createMap(data){
@@ -17,11 +17,11 @@ function createMap(data){
       .attr("height", height);
 
     const xScale = d3.scaleLinear()
-                     .domain(d3.extent(data, d => d.year))
+                     .domain(d3.extent(data.monthlyVariance, d => d.year))
                      .range([margins.left, width - margins.right]);
 
     const yScale = d3.scaleLinear()
-                     .domain([d3.min(data, d => d.month) - 1, d3.max(data, d => d.month) + 1])
+                     .domain([d3.min(data.monthlyVariance, d => d.month) - 0.5, d3.max(data.monthlyVariance, d => d.month) + 0.5])
                      .range([margins.top, height - margins.bottom]);
 
     const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
@@ -31,21 +31,64 @@ function createMap(data){
 
     let domainArr = [];
 
-    for(let i = yScale.domain()[0]; i <= yScale.domain()[1]; ++i){
+    for(let i = yScale.domain()[0] + 0.5; i <= yScale.domain()[1]; ++i){
       domainArr[i-1] = i;
     }
 
     yAxis.ticks()
-         .tickValues(domainArr)
-         .tickFormat(d => translateTick(d));
+          .tickValues(domainArr)
+          .tickFormat(d => translateTick(d));
+
 
     svg.append("g")
+       .attr("transform", `translate(0, ${height-margins.bottom})`)
        .call(xAxis);
 
     svg.append("g")
-       .attr("transform", `translate(${margins.left*3}, 0)`)
+       .attr("transform", `translate(${margins.left}, 0)`)
        .call(yAxis);
 
+    svg.selectAll("rect")
+       .data(data.monthlyVariance)
+       .enter()
+       .append("rect")
+       .attr("width", 7)
+       .attr("height", 35)
+       .attr("x", d => xScale(d.year))
+       .attr("y", d => yScale(d.month) - 18)
+       .attr("class", d => assignColor(data.baseTemperature, d.variance));
+
+}
+
+function assignColor(baseTemperature, variance){
+  if(baseTemperature + variance >= 11.7){
+    return "red";
+  }
+  else if(baseTemperature + variance < 11.7 && baseTemperature + variance >= 10.6){
+    return "orange-red";
+  }
+  else if(baseTemperature + variance < 10.6 && baseTemperature + variance >= 9.5){
+    return "orange";
+  }
+  else if(baseTemperature + variance < 9.5 && baseTemperature + variance >= 8.3){
+    return "yellow-orange";
+  }
+  else if(baseTemperature + variance < 8.3 && baseTemperature + variance >= 7.2){
+    return "yellow";
+  }
+  else if(baseTemperature + variance < 7.2 && baseTemperature + variance >= 6.1){
+    return "blue-yellow";
+  }
+  else if(baseTemperature + variance < 6.1 && baseTemperature + variance >= 5.0){
+    return "blue";
+  }
+  else if(baseTemperature + variance < 5.0 && baseTemperature + variance >= 3.9){
+    return "blue";
+  }
+  else if(baseTemperature + variance < 3.9){
+    return "blue";
+  }
+  return "";
 }
 
 function translateTick(tick){

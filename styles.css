@@ -1,0 +1,27 @@
+.red{
+    fill:red;
+}
+.orange-red{
+    fill: orangered;
+}
+.orange{
+    fill: orange;
+}
+.yellow-orange{
+    fill: rgb(255, 213, 0);
+}
+.yellow{
+    fill: rgb(248, 248, 86);
+}
+.blue-yellow{
+    fill: rgb(128, 201, 211);
+}
+.blue{
+    fill: rgb(49, 186, 254);
+}
+.light-navy-blue{
+    fill: rgb(47, 47, 233)
+}
+.navy-blue{
+    fill: navy;
+}
