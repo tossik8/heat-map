@@ -1,3 +1,17 @@
+body{
+    display: flex;
+    justify-content: center;
+}
+.panel{
+    text-align: center;
+}
+*{
+    margin: 0;
+}
+.cell:hover{
+    stroke: black;
+    stroke-width: 2px;
+}
 .red{
     fill:red;
 }
@@ -24,4 +38,7 @@
 }
 .navy-blue{
     fill: navy;
+}
+.colour{
+    stroke: black;
 }

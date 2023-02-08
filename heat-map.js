@@ -2,7 +2,7 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const width = 1603;
 const height = 540;
-const margins = {top: 60, right: 60, bottom: 60, left: 60};
+const margins = {top: 40, right: 100, bottom: 80, left: 100};
 
 fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json")
     .then(response => response.json())
@@ -17,7 +17,7 @@ function createMap(data){
       .attr("height", height);
 
     const xScale = d3.scaleLinear()
-                     .domain(d3.extent(data.monthlyVariance, d => d.year))
+                     .domain([d3.min(data.monthlyVariance, d => d.year), d3.max(data.monthlyVariance, d => d.year) + 1])
                      .range([margins.left, width - margins.right]);
 
     const yScale = d3.scaleLinear()
@@ -41,10 +41,12 @@ function createMap(data){
 
 
     svg.append("g")
+       .attr("id", "x-axis")
        .attr("transform", `translate(0, ${height-margins.bottom})`)
        .call(xAxis);
 
     svg.append("g")
+       .attr("id", "y-axis")
        .attr("transform", `translate(${margins.left}, 0)`)
        .call(yAxis);
 
@@ -52,43 +54,68 @@ function createMap(data){
        .data(data.monthlyVariance)
        .enter()
        .append("rect")
-       .attr("width", 7)
+       .attr("width", 6)
        .attr("height", 35)
        .attr("x", d => xScale(d.year))
-       .attr("y", d => yScale(d.month) - 18)
+       .attr("y", d => yScale(d.month) - 17.5)
        .attr("class", d => assignColor(data.baseTemperature, d.variance));
+
+    svg.append("text")
+       .text("Months")
+       .attr("x", margins.left/3)
+       .attr("y", height/2)
+       .style("transform-origin", margins.left/3 + "px " + height/2 + "px")
+       .style("transform", "rotate(-90deg)");
+
+    svg.append("text")
+       .text("Years")
+       .attr("x", width/2)
+       .attr("y", height - margins.bottom/4);
+
+    const colourScale = d3.scaleLinear()
+                         .domain([1.7, 13.9])
+                         .range([margins.left, width/3.5]);
+
+    const colourAxis = d3.axisBottom(colourScale);
+    colourAxis.tickValues([2.8, 3.9,5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8])
+              .tickFormat(d3.format(".1f"));
+
+    svg.append("g")
+       .attr("transform", `translate(0,${height - margins.bottom/4.9})`)
+       .call(colourAxis);
 
 }
 
 function assignColor(baseTemperature, variance){
+  let cell = "cell ";
   if(baseTemperature + variance >= 11.7){
-    return "red";
+    cell += "red";
   }
   else if(baseTemperature + variance < 11.7 && baseTemperature + variance >= 10.6){
-    return "orange-red";
+    cell += "orange-red";
   }
   else if(baseTemperature + variance < 10.6 && baseTemperature + variance >= 9.5){
-    return "orange";
+    cell += "orange";
   }
   else if(baseTemperature + variance < 9.5 && baseTemperature + variance >= 8.3){
-    return "yellow-orange";
+    cell += "yellow-orange";
   }
   else if(baseTemperature + variance < 8.3 && baseTemperature + variance >= 7.2){
-    return "yellow";
+    cell += "yellow";
   }
   else if(baseTemperature + variance < 7.2 && baseTemperature + variance >= 6.1){
-    return "blue-yellow";
+    cell += "blue-yellow";
   }
   else if(baseTemperature + variance < 6.1 && baseTemperature + variance >= 5.0){
-    return "blue";
+    cell += "blue";
   }
   else if(baseTemperature + variance < 5.0 && baseTemperature + variance >= 3.9){
-    return "blue";
+    cell += "blue";
   }
   else if(baseTemperature + variance < 3.9){
-    return "blue";
+    cell += "blue";
   }
-  return "";
+  return cell;
 }
 
 function translateTick(tick){
