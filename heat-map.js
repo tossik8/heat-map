@@ -4,13 +4,57 @@ const width = 1603;
 const height = 540;
 const margins = {top: 40, right: 100, bottom: 80, left: 100};
 
+function adjustZoom(){
+  if(document.documentElement.clientWidth < 400){
+    document.body.style.zoom = "18.5%";
+  }
+  else if(document.documentElement.clientWidth < 500){
+    document.body.style.zoom = "25%";
+  }
+  else if(document.documentElement.clientWidth < 600){
+    document.body.style.zoom = "30%";
+  }
+
+  else if(document.documentElement.clientWidth < 700){
+    document.body.style.zoom = "35%";
+  }
+  else if(document.documentElement.clientWidth < 800){
+    document.body.style.zoom = "40%";
+  }
+  else if(document.documentElement.clientWidth < 900){
+    document.body.style.zoom = "45%";
+  }
+  else if(document.documentElement.clientWidth < 1030){
+    document.body.style.zoom = "55%";
+  }
+  else if(document.documentElement.clientWidth < 1200){
+    document.body.style.zoom = "65%";
+  }
+  else if(document.documentElement.clientWidth < 1350){
+    document.body.style.zoom = "75%";
+  }
+  else if(document.documentElement.clientWidth < 1560){
+    document.body.style.zoom = "85%";
+  }
+  else {
+    document.body.style.zoom = "100%";
+  }
+}
+
+window.onload = () => {
+  adjustZoom();
+}
+
+window.onresize = () => {
+  adjustZoom();
+}
+
 fetch("https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json")
     .then(response => response.json())
     .then(data => createMap(data))
 
 
 function createMap(data){
-    console.log(data)
     const svg = d3.select(".panel")
       .append("svg")
       .attr("width", width)
@@ -105,8 +149,8 @@ function createMap(data){
 function createTooltip(){
   const rects = document.getElementsByClassName("cell");
   for(let rect of rects){
-    const location = rect.getBoundingClientRect();
     rect.addEventListener("mouseover", () => {
+      const location = rect.getBoundingClientRect();
       document.getElementById("date").textContent = rect.attributes.getNamedItem("data-year").value + " - " + translateTick(parseInt(rect.attributes.getNamedItem("data-month").value));
       document.getElementById("temperature").textContent = rect.attributes.getNamedItem("data-temp").value + "℃";
       const variance = (rect.attributes.getNamedItem("data-temp").value - 8.66).toFixed(1);
@@ -118,7 +162,7 @@ function createTooltip(){
       }
       document.getElementById("tooltip").style.top = location.top - 90 + "px";
       const tooltipWidth = document.getElementById("tooltip").clientWidth / 2;
-      document.getElementById("tooltip").style.left = location.left - tooltipWidth + "px";
+      document.getElementById("tooltip").style.left = location.left+ - tooltipWidth + 5 + "px";
       document.getElementById("tooltip").setAttribute("data-year", rect.attributes.getNamedItem("data-year").value);
       document.getElementById("tooltip").classList.add("visible");
       document.getElementById("tooltip").classList.remove("invisible");
