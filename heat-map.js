@@ -58,7 +58,10 @@ function createMap(data){
        .attr("height", 35)
        .attr("x", d => xScale(d.year))
        .attr("y", d => yScale(d.month) - 17.5)
-       .attr("class", d => assignColor(data.baseTemperature, d.variance));
+       .attr("class", d => assignColor(data.baseTemperature, d.variance))
+       .attr("data-month", d => d.month)
+       .attr("data-year", d => d.year)
+       .attr("data-temp", d => data.baseTemperature + d.variance);
 
     svg.append("text")
        .text("Months")
@@ -80,10 +83,33 @@ function createMap(data){
     colourAxis.tickValues([2.8, 3.9,5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8])
               .tickFormat(d3.format(".1f"));
 
-    svg.append("g")
+
+    const legend = svg.append("g")
+       .attr("id", "legend")
        .attr("transform", `translate(0,${height - margins.bottom/4.9})`)
        .call(colourAxis);
 
+    const colours = ["red", "orange-red", "orange", "yellow-orange", "yellow", "blue-yellow", "blue", "light-navy-blue", "navy-blue"];
+    generateColour(legend, 32.3, margins.left + 32.3, "navy-blue");
+    generateColour(legend, 32.3, margins.left + 32.3*2, "light-navy-blue");
+    generateColour(legend, 32.3, margins.left + 32.3*3, "blue");
+    generateColour(legend, 32.3, margins.left + 32.3 * 4, "blue-yellow");
+    generateColour(legend, 32.3, margins.left + 32.3 * 5, "yellow");
+    generateColour(legend, 35.2, margins.left + 32.29 * 6, "yellow-orange");
+    generateColour(legend, 32.3, margins.left + 32.7 * 7, "orange");
+    generateColour(legend, 32.5, margins.left + 32.65 * 8, "orange-red");
+    generateColour(legend, 32.5, margins.left + 32.6*9, "red");
+
+
+}
+
+function generateColour(legend, width, x, colour){
+  legend.append("rect")
+        .attr("height", 20)
+        .attr("width", width)
+        .attr("class",`colour ${colour}`)
+        .attr("y", -20)
+        .attr("x", x);
 }
 
 function assignColor(baseTemperature, variance){

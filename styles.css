@@ -13,31 +13,31 @@ body{
     stroke-width: 2px;
 }
 .red{
-    fill:red;
+    fill:#ff0000;
 }
 .orange-red{
-    fill: orangered;
+    fill: #ff4500;
 }
 .orange{
-    fill: orange;
+    fill: #ffa500;
 }
 .yellow-orange{
-    fill: rgb(255, 213, 0);
+    fill: #ffd500;
 }
 .yellow{
-    fill: rgb(248, 248, 86);
+    fill: #f8f856;
 }
 .blue-yellow{
-    fill: rgb(128, 201, 211);
+    fill: #80c9d3;
 }
 .blue{
-    fill: rgb(49, 186, 254);
+    fill: #31bafe;
 }
 .light-navy-blue{
-    fill: rgb(47, 47, 233)
+    fill: #2f2fe9;
 }
 .navy-blue{
-    fill: navy;
+    fill: #000080;
 }
 .colour{
     stroke: black;
