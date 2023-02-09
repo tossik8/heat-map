@@ -42,3 +42,14 @@ body{
 .colour{
     stroke: black;
 }
+
+#tooltip{
+    position: absolute;
+    background-color: rgba(37, 21, 21, 0.527);
+}
+.visible{
+    opacity: 1;
+}
+.invisible{
+    opacity: 0;
+}

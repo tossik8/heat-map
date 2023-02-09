@@ -61,7 +61,7 @@ function createMap(data){
        .attr("class", d => assignColor(data.baseTemperature, d.variance))
        .attr("data-month", d => d.month)
        .attr("data-year", d => d.year)
-       .attr("data-temp", d => data.baseTemperature + d.variance);
+       .attr("data-temp", d => (data.baseTemperature + d.variance).toFixed(1));
 
     svg.append("text")
        .text("Months")
@@ -89,7 +89,6 @@ function createMap(data){
        .attr("transform", `translate(0,${height - margins.bottom/4.9})`)
        .call(colourAxis);
 
-    const colours = ["red", "orange-red", "orange", "yellow-orange", "yellow", "blue-yellow", "blue", "light-navy-blue", "navy-blue"];
     generateColour(legend, 32.3, margins.left + 32.3, "navy-blue");
     generateColour(legend, 32.3, margins.left + 32.3*2, "light-navy-blue");
     generateColour(legend, 32.3, margins.left + 32.3*3, "blue");
@@ -100,7 +99,29 @@ function createMap(data){
     generateColour(legend, 32.5, margins.left + 32.65 * 8, "orange-red");
     generateColour(legend, 32.5, margins.left + 32.6*9, "red");
 
+    createTooltip();
+}
 
+function createTooltip(){
+  const rects = document.getElementsByClassName("cell");
+  for(let rect of rects){
+    rect.addEventListener("mouseover", () => {
+      const location = rect.getBoundingClientRect();
+      console.log(location.top);
+      document.getElementById("date").innerText = rect.attributes.getNamedItem("data-year").value + " - " + translateTick(parseInt(rect.attributes.getNamedItem("data-month").value));
+      document.getElementById("temperature").textContent = rect.attributes.getNamedItem("data-temp").value + "℃";
+      document.getElementById("variance").textContent = (rect.attributes.getNamedItem("data-temp").value - 8.66).toFixed(1);
+      document.getElementById("tooltip").style.top = location.top -70 + "px";
+      document.getElementById("tooltip").style.left = location.left - 35 + "px";
+      document.getElementById("tooltip").classList.add("visible");
+      document.getElementById("tooltip").classList.remove("invisible");
+
+    });
+    rect.addEventListener("mouseleave", () => {
+      document.getElementById("tooltip").classList.add("invisible");
+      document.getElementById("tooltip").classList.remove("visible");
+    });
+  }
 }
 
 function generateColour(legend, width, x, colour){
@@ -136,10 +157,10 @@ function assignColor(baseTemperature, variance){
     cell += "blue";
   }
   else if(baseTemperature + variance < 5.0 && baseTemperature + variance >= 3.9){
-    cell += "blue";
+    cell += "light-navy-blue";
   }
   else if(baseTemperature + variance < 3.9){
-    cell += "blue";
+    cell += "navy-blue";
   }
   return cell;
 }
