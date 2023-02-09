@@ -105,14 +105,21 @@ function createMap(data){
 function createTooltip(){
   const rects = document.getElementsByClassName("cell");
   for(let rect of rects){
+    const location = rect.getBoundingClientRect();
     rect.addEventListener("mouseover", () => {
-      const location = rect.getBoundingClientRect();
-      console.log(location.top);
-      document.getElementById("date").innerText = rect.attributes.getNamedItem("data-year").value + " - " + translateTick(parseInt(rect.attributes.getNamedItem("data-month").value));
+      document.getElementById("date").textContent = rect.attributes.getNamedItem("data-year").value + " - " + translateTick(parseInt(rect.attributes.getNamedItem("data-month").value));
       document.getElementById("temperature").textContent = rect.attributes.getNamedItem("data-temp").value + "℃";
-      document.getElementById("variance").textContent = (rect.attributes.getNamedItem("data-temp").value - 8.66).toFixed(1);
-      document.getElementById("tooltip").style.top = location.top -70 + "px";
-      document.getElementById("tooltip").style.left = location.left - 35 + "px";
+      const variance = (rect.attributes.getNamedItem("data-temp").value - 8.66).toFixed(1);
+      if(variance > 0){
+        document.getElementById("variance").textContent = "+" + variance;
+      }
+      else {
+        document.getElementById("variance").textContent = variance;
+      }
+      document.getElementById("tooltip").style.top = location.top - 90 + "px";
+      const tooltipWidth = document.getElementById("tooltip").clientWidth / 2;
+      document.getElementById("tooltip").style.left = location.left - tooltipWidth + "px";
+      document.getElementById("tooltip").setAttribute("data-year", rect.attributes.getNamedItem("data-year").value);
       document.getElementById("tooltip").classList.add("visible");
       document.getElementById("tooltip").classList.remove("invisible");
 

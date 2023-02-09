@@ -1,25 +1,35 @@
 body{
     display: flex;
     justify-content: center;
+    font-family:Calibri, 'Trebuchet MS', sans-serif;
 }
 .panel{
     text-align: center;
+    margin-top: 1.5rem;
+}
+#title{
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+#description{
+    font-weight: 500;
 }
 *{
     margin: 0;
+    box-sizing: border-box;
 }
 .cell:hover{
     stroke: black;
     stroke-width: 2px;
 }
 .red{
-    fill:#ff0000;
+    fill:#d11a1a;
 }
 .orange-red{
-    fill: #ff4500;
+    fill: #e15f2f;
 }
 .orange{
-    fill: #ffa500;
+    fill: #eea40f;
 }
 .yellow-orange{
     fill: #ffd500;
@@ -34,10 +44,10 @@ body{
     fill: #31bafe;
 }
 .light-navy-blue{
-    fill: #2f2fe9;
+    fill: #2f5ae9;
 }
 .navy-blue{
-    fill: #000080;
+    fill: #203ed4;
 }
 .colour{
     stroke: black;
@@ -45,7 +55,16 @@ body{
 
 #tooltip{
     position: absolute;
-    background-color: rgba(37, 21, 21, 0.527);
+    background-color: rgba(37, 21, 21, 0.827);
+    color: white;
+    font-size: 1.05rem;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    pointer-events: none;
+}
+#temperature{
+    margin: 0.2rem 0;
 }
 .visible{
     opacity: 1;
