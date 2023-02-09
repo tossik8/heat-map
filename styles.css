@@ -2,6 +2,8 @@ body{
     display: flex;
     justify-content: center;
     font-family:Calibri, 'Trebuchet MS', sans-serif;
+    min-height: 100vh;
+    background:linear-gradient(90deg, rgb(210, 255, 163), rgb(81, 206, 238, 0.5));
 }
 .panel{
     text-align: center;

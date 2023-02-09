@@ -101,7 +101,7 @@ function createMap(data){
        .attr("width", 6)
        .attr("height", 35)
        .attr("x", d => xScale(d.year))
-       .attr("y", d => yScale(d.month) - 17.5)
+       .attr("y", d => yScale(d.month) - 18)
        .attr("class", d => assignColor(data.baseTemperature, d.variance))
        .attr("data-month", d => d.month)
        .attr("data-year", d => d.year)
