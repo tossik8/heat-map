@@ -91,6 +91,8 @@ function createMap(data){
 
     svg.append("g")
        .attr("id", "y-axis")
+       .transition()
+       .duration(1000)
        .attr("transform", `translate(${margins.left}, 0)`)
        .call(yAxis);
 
@@ -109,6 +111,8 @@ function createMap(data){
 
     svg.append("text")
        .text("Months")
+       .transition()
+       .duration(1000)
        .attr("x", margins.left/3)
        .attr("y", height/2)
        .style("transform-origin", margins.left/3 + "px " + height/2 + "px")
@@ -177,6 +181,8 @@ function createTooltip(){
 
 function generateColour(legend, width, x, colour){
   legend.append("rect")
+        .transition()
+        .duration(1000)
         .attr("height", 20)
         .attr("width", width)
         .attr("class",`colour ${colour}`)
